@@ -8,15 +8,15 @@ Clone this repository then
 npm install
 ```
 
-#Usage:
+#Usage exemple:
 
 ```
-node index.js -i _yourUrl?wsdl_ -o result.js
+node index.js -i https://svn.apache.org/repos/asf/airavata/sandbox/xbaya-web/test/Calculator.wsdl -o result.js
 ```
 
 or 
 
 ```
-node index.js -i _yourFile.wsdl_ -o result.js
+node index.js -i yourFile.wsdl -o result.js
 ```
 
