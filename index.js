@@ -3,6 +3,10 @@ var Handlebars = require('handlebars');
 var beautify = require('js-beautify').js_beautify;
 var fs = require('fs');
 
+
+
+
+
 const commandLineArgs = require('command-line-args')
 
 const optionArgDefinitions = [
@@ -83,9 +87,57 @@ if (args.output != undefined) {
 var inputfile = undefined;
 inputfile = args.input;
 
+var ObjectStack=[];
 
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function fixBugOnTypeAndLoop(obj){
+    console.log(obj);
+    if (typeof obj === 'string' || obj instanceof String) {
+        return obj;
+    }
+
+    ObjectStack.push(obj);
+    var newObj={};
+    var param="";
+    var keys = Object.keys(obj);
+    for (var i = 0, j = keys.length; i < j; i++) {
+        key = keys[i];
+        if (!isNaN(key)) {
+            param+=obj[key];
+        } else {
+            if (param!="") {
+                var lparam=param.split("|");
+                newObj[lparam[0]]=lparam[1];
+                param="";
+            }
+            if (!containsObject(obj[key],ObjectStack)) {
+                newObj[key]=fixBugOnTypeAndLoop(obj[key]);
+            }
+        }
+    }
+    ObjectStack.pop();
+
+
+    return newObj;
+}
 
 Handlebars.registerHelper('eachkey', function(context, options) {
+
+    if (containsObject(context,ObjectStack)) {
+        return "";
+    }
+    ObjectStack.push(context);
+
     var ret = "";
     if (context == undefined) {
         return "";
@@ -104,7 +156,7 @@ Handlebars.registerHelper('eachkey', function(context, options) {
         }) + sepa;
 
     }
-
+    ObjectStack.pop();
     return ret;
 });
 
@@ -127,7 +179,9 @@ soap.createClient(inputfile, function(err, client) {
 
 
 
+
 function buildStub(obj) {
+    obj=fixBugOnTypeAndLoop(obj);
     var result = beautify(serviceTemplate(obj), { indent_size: 2 })
     console.log(result);
     if (outputfile != undefined) {
