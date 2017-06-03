@@ -120,7 +120,7 @@ function fixBugOnTypeAndLoop(obj){
                 newObj[lparam[0]]=lparam[1];
                 param="";
             }
-            if (!containsObject(obj[key],ObjectStack)) {
+            if (obj[key]!=null && !containsObject(obj[key],ObjectStack)) {
                 newObj[key]=fixBugOnTypeAndLoop(obj[key]);
             }
         }
