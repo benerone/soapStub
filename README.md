@@ -1,6 +1,6 @@
 Simple node script to generate Server Stub for package soap (https://www.npmjs.com/package/soap)
 
-#Install:
+### Install: ###
 
 Clone this repository then
 
@@ -8,7 +8,11 @@ Clone this repository then
 npm install
 ```
 
-#Usage exemples:
+### Requirements: ###
+
+node version >=6
+
+### Usage exemples: ###
 
 
 ```
