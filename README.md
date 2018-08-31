@@ -112,4 +112,17 @@ var services = { /* Services */
   }
 };
 ```
+### Use workflow: ###
+
+Requirements: wsdl
+
+From your wsdl which is your service specifications, you generate webservice skeleton (see above).
+
+Once you've done this, code the behavior part of your service (replace ```//Your code``` with your code).
+
+Now, you have your wsdl and your service. Follow exemple prodived at https://github.com/vpulim/node-soap#soaplistenserver-path-services-wsdl---create-a-new-soap-server-that-listens-on-path-and-provides-services
+and replace the service by your service and 'myservice.wsdl' by your wsdl. 
+
+That'all.
+
 
